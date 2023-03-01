@@ -20,7 +20,7 @@ def detail_view(request,id):
     user = get_user(request)
     context_relacion = {"pj_name":personaje.get("name",None),
                         "user_name":str(user.username)}
-    var = requests.post('http://127.0.0.1:8080/chequearrelacion', json = context_relacion)
+    var = requests.post('http://127.0.0.1:8000/chequearrelacion', json = context_relacion)
     seguido = var.json().get("encontrado")
     try:
         vehicle  = requests.get(vehicle[0])
@@ -34,13 +34,13 @@ def detail_view(request,id):
     print(context["seguido"])
     datos ={"pj_name":personaje.get("name",None).replace(' ','_'),
             "user_name":request.POST.get("user_name",None)}
-    requests.post('http://127.0.0.1:8080/guardardatos', json = datos)
+    requests.post('http://127.0.0.1:8000/guardardatos', json = datos)
     return render(request,"detail.html",context)
 
 @login_required(login_url="/swapp/login")
 def profile_view(request):
     user = get_user(request)
-    var = requests.get('http://127.0.0.1:8080/seguidos?user=' + user.username)
+    var = requests.get('http://127.0.0.1:8000/seguidos?user=' + user.username)
     lista_seguidos = (var.json()['lista_seguidos'])
     context= {"user":user,
                 "lista_seguidos": lista_seguidos}
